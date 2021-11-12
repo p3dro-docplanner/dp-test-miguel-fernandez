@@ -14,7 +14,7 @@ export const Calendar = () => {
 
     return (
         <div>
-            {appointments.length > 0 ? <div>Loaded</div> : <div>No load</div>}
+            {appointments.length > 0 && <div>{appointments.map((appointment) => <div>{new Date(appointment.Start).getDate()}</div>)}</div>}
         </div>
     )
 }
