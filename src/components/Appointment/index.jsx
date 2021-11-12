@@ -3,14 +3,15 @@ import { CalendarOutlined } from "@ant-design/icons";
 
 import { Label } from "../Label";
 import { Calendar } from "../Calendar";
+import { Reschedule } from "../Reschedule";
 
 export const Appointment = () => {
   return (
-    <div>
-      <div>
+    <div data-testid="appointment">
+      <div data-testid="appointment-current">
         Confirm your appointment with <strong>Dr Simeon Molas</strong>
       </div>
-      <div className="current-appointment">
+      <div data-testid="current" className="current-appointment">
         <CalendarOutlined className="icon" />
         Date for user
       </div>
@@ -18,7 +19,8 @@ export const Appointment = () => {
       <Label
         text={"You can change the appointment for when it suits you better"}
       />
-      <Calendar></Calendar>
+      <Calendar />
+      <Reschedule></Reschedule>
     </div>
   );
 };
