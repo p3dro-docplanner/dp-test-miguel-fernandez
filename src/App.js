@@ -1,9 +1,10 @@
 import React from 'react';
+import { Calendar } from './components/Calendar/index';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      Hello
+      <Calendar></Calendar>
     </div>
   );
 }
