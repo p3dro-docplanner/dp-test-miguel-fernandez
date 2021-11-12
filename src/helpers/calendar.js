@@ -25,6 +25,7 @@ export const groupsByDay = (appointments) => {
   );
 };
 
+//buscar una forma más rápida
 export const formatDate = (date) => {
   const startDate = moment(date.Start);
   const endDate = moment(date.End);

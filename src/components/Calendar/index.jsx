@@ -31,10 +31,9 @@ export const Calendar = () => {
 
   const handleShowMore = () => setShowMore(!showMore);
 
-  const handleOnClick = (e) => {
-    console.log(e.target.value);
-    modifyHandler(e.target.value);
-    setSelected(e.target.value);
+  const handleOnClick = (date) => {
+    modifyHandler(date);
+    setSelected(date);
   };
 
   const filteredAppointments = (data) => data.filter((day) => isWeekRange(day));
@@ -43,19 +42,21 @@ export const Calendar = () => {
     return week[day];
   };
 
+  const parseDateButton = (date) =>
+    formatDate(date).hourStart + ":" + formatDate(date).minutesStart;
+
   const renderItems = (group) =>
     groupByDay[group].map((date, index) => {
       return (
-        <button
+        <Button
           type="primary"
           key={`${group} ${index}`}
-          value={formatDate(date).finalStart}
-          onClick={handleOnClick}
+          onClick={() => handleOnClick(formatDate(date).finalStart)}
           disabled={date.Taken}
           className="button-calendar"
         >
-          {formatDate(date).hourStart + ":" + formatDate(date).minutesStart}
-        </button>
+          {parseDateButton(date)}
+        </Button>
       );
     });
 
