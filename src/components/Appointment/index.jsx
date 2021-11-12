@@ -4,8 +4,14 @@ import { CalendarOutlined } from "@ant-design/icons";
 import { Label } from "../Label";
 import { Calendar } from "../Calendar";
 import { Reschedule } from "../Reschedule";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 export const Appointment = () => {
+  const appointment = useSelector((state) => state.appointment.appointment);
+
+  const formatDateAppointment = (date) => `On ${moment(date).format("LLLL")}`;
+
   return (
     <div data-testid="appointment">
       <div data-testid="appointment-current">
@@ -13,7 +19,7 @@ export const Appointment = () => {
       </div>
       <div data-testid="current" className="current-appointment">
         <CalendarOutlined className="icon" />
-        Date for user
+        {formatDateAppointment(appointment)}
       </div>
       <Label text={"Did you have an unexpected situation?"} bold />
       <Label

@@ -7,6 +7,8 @@ import {
 } from "../../helpers/calendar";
 import { Row, Col, Button } from "antd";
 import moment from "moment";
+import { useDispatch } from "react-redux";
+import { appointmentActions } from "../../store/slices/appointmentSlice";
 
 const STANDARD_FORMAT_DATE = "YYYY-MM-DD HH:mm:ss";
 
@@ -14,6 +16,10 @@ export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
   const [selected, setSelected] = useState("");
   const [showMore, setShowMore] = useState(false);
+  const dispatch = useDispatch();
+
+  const modifyHandler = (data) =>
+    dispatch(appointmentActions.updateAppointment(data));
 
   const groupByDay = groupsByDay(appointments);
 
@@ -29,6 +35,7 @@ export const Calendar = () => {
 
   const handleOnClick = (e) => {
     console.log(e.target.value);
+    modifyHandler(e.target.value);
     setSelected(e.target.value);
   };
 
@@ -51,7 +58,7 @@ export const Calendar = () => {
         <Button
           type="primary"
           key={`${group} ${index}`}
-          value={formatDate(date).finalStart + " " + formatDate(date).finalEnd}
+          value={formatDate(date).finalStart}
           onClick={handleOnClick}
           disabled={date.Taken}
           className="button-calendar"
@@ -65,7 +72,7 @@ export const Calendar = () => {
     <div className="current-appointment">
       {appointments.length > 0 && (
         <Row>
-          <Button>Atras</Button>
+          <Button>{"<"}</Button>
           {Object.keys(groupByDay).map((group, index) => {
             let date;
             date = findDay(group);
@@ -83,7 +90,7 @@ export const Calendar = () => {
               </div>
             );
           })}
-          <Button>Adelante</Button>
+          <Button>{">"}</Button>
         </Row>
       )}
       <div className="button-more">
