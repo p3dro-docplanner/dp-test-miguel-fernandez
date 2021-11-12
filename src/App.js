@@ -1,7 +1,7 @@
-import React from 'react';
-import { Appointment } from './components/Appointment';
-import './index.css';
-import 'antd/dist/antd.css';
+import React from "react";
+import { Appointment } from "./components/Appointment";
+import "./index.css";
+import "antd/dist/antd.css";
 
 const App = () => {
   return (
@@ -9,6 +9,6 @@ const App = () => {
       <Appointment></Appointment>
     </div>
   );
-}
+};
 
 export default App;
