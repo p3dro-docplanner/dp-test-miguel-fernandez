@@ -77,12 +77,6 @@ h5 {
 
 .button-calendar {
   margin: 10px;
-  background-color: lightblue;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  height: 32px;
-  padding: 4px 15px;
-  cursor: pointer;
 }
 
 .show-less {
