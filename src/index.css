@@ -5,9 +5,32 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #EDEFF2!important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.layout {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.current-appointment {
+  background-color: white;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top:20px;
+  margin-bottom:20px;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.bold {
+  font-weight: bold;
 }

@@ -1,12 +1,14 @@
-import React from 'react';
-import { Calendar } from './components/Calendar/index';
+import React from "react";
+import { Appointment } from "./components/Appointment";
+import "./index.css";
+import "antd/dist/antd.css";
 
 const App = () => {
   return (
-    <div className="App">
-      <Calendar></Calendar>
+    <div className="layout">
+      <Appointment></Appointment>
     </div>
   );
-}
+};
 
 export default App;
