@@ -4,13 +4,11 @@ import {
   groupsByDay,
   formatDate,
   enumerateDaysBetweenDates,
+  isWeekRange,
 } from "../../helpers/calendar";
 import { Row, Col, Button } from "antd";
-import moment from "moment";
 import { useDispatch } from "react-redux";
 import { appointmentActions } from "../../store/slices/appointmentSlice";
-
-const STANDARD_FORMAT_DATE = "YYYY-MM-DD HH:mm:ss";
 
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
@@ -39,14 +37,7 @@ export const Calendar = () => {
     setSelected(e.target.value);
   };
 
-  const filteredAppointments = (data) =>
-    data.filter((day) => {
-      return (
-        formatDate(day).finalStart >= moment().format(STANDARD_FORMAT_DATE) &&
-        formatDate(day).finalStart <
-          moment().add(6, "days").format(STANDARD_FORMAT_DATE)
-      );
-    });
+  const filteredAppointments = (data) => data.filter((day) => isWeekRange(day));
   const findDay = (day) => {
     const week = enumerateDaysBetweenDates(formatDate(Date.now()));
     return week[day];
@@ -55,7 +46,7 @@ export const Calendar = () => {
   const renderItems = (group) =>
     groupByDay[group].map((date, index) => {
       return (
-        <Button
+        <button
           type="primary"
           key={`${group} ${index}`}
           value={formatDate(date).finalStart}
@@ -64,7 +55,7 @@ export const Calendar = () => {
           className="button-calendar"
         >
           {formatDate(date).hourStart + ":" + formatDate(date).minutesStart}
-        </Button>
+        </button>
       );
     });
 
@@ -74,8 +65,7 @@ export const Calendar = () => {
         <Row>
           <Button>{"<"}</Button>
           {Object.keys(groupByDay).map((group, index) => {
-            let date;
-            date = findDay(group);
+            const date = findDay(group);
             return (
               <div key={index} className="calendar">
                 <Col className={showMore ? "show-more" : "show-less"}>

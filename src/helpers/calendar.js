@@ -1,5 +1,7 @@
 import moment from "moment";
 
+const STANDARD_FORMAT_DATE = "YYYY-MM-DD HH:mm:ss";
+
 export const groupsByDay = (appointments) => {
   return (
     appointments &&
@@ -66,3 +68,8 @@ export const enumerateDaysBetweenDates = (date) => {
   }
   return dates;
 };
+
+export const isWeekRange = (day) =>
+  formatDate(day).finalStart >= moment().format(STANDARD_FORMAT_DATE) &&
+  formatDate(day).finalStart <
+    moment().add(6, "days").format(STANDARD_FORMAT_DATE);
