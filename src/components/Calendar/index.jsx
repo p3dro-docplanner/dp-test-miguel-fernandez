@@ -65,6 +65,7 @@ export const Calendar = () => {
     <div className="current-appointment">
       {appointments.length > 0 && (
         <Row>
+          <Button>Atras</Button>
           {Object.keys(groupByDay).map((group, index) => {
             let date;
             date = findDay(group);
@@ -82,6 +83,7 @@ export const Calendar = () => {
               </div>
             );
           })}
+          <Button>Adelante</Button>
         </Row>
       )}
       <div className="button-more">
