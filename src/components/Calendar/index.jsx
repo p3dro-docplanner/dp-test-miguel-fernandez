@@ -1,48 +1,51 @@
 import React, { useState, useEffect } from "react";
 import appointmentService from "../../services/appointmentService";
-import moment from "moment";
+import { groupsByDay, formatDate } from "../../helpers/calendar";
 
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
+  const [selected, setSelected] = useState("");
+
+  const groupByDay = groupsByDay(appointments);
 
   useEffect(() => {
     appointmentService.getAppointments().then((response) => {
-      console.log(response.data);
       setAppointments(response.data);
     });
   }, []);
 
-  const groupsByDay =
-    appointments &&
-    appointments.reduce((acc, date) => {
-      const weekDay = `${moment(date.Start).week()}-${moment(
-        date.Start
-      ).day()}`;
-
-      if (!acc[weekDay]) {
-        acc[weekDay] = [];
-      }
-
-      acc[weekDay].push(date);
-      return acc;
-    }, {});
+  const handleOnClick = (e) => {
+    console.log(e.target.value);
+    setSelected(e.target.value);
+  };
 
   const groupPerDay = () => {
-    /* const startDate = moment(appointment.Start);
-      const weekDay = startDate.format("ddd");
-      const numberDay = startDate.format("DD");
-      const monthName = startDate.format("MMM");
-      const hour = startDate.format("HH");
-      const minutes = startDate.format("mm");*/
+    let listHours = [];
 
-    console.log(groupsByDay);
+    for (let property in groupByDay) {
+      groupByDay[property].map((date, index) =>
+        listHours.push(
+          <button
+            key={`${property} ${index}`}
+            value={
+              formatDate(date).finalStart + " " + formatDate(date).finalEnd
+            }
+            onClick={handleOnClick}
+            disabled={date.Taken}
+          >
+            {formatDate(date).hourStart + ":" + formatDate(date).minutesStart}
+          </button>
+        )
+      );
+    }
 
-    //return <div>{new Date(appointment.Start).getDate()}</div>;
+    return listHours;
   };
 
   return (
     <div className="current-appointment">
       {appointments.length > 0 && <div>{groupPerDay()}</div>}
+      {selected && <button>Ok</button>}
     </div>
   );
 };
