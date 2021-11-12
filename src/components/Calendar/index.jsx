@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import appointmentService from "../../services/appointmentService";
-import { groupsByDay, formatDate } from "../../helpers/calendar";
+import {
+  groupsByDay,
+  formatDate,
+  enumerateDaysBetweenDates,
+} from "../../helpers/calendar";
+import { Row, Col, Button } from "antd";
+import moment from "moment";
 
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
@@ -10,41 +16,65 @@ export const Calendar = () => {
 
   useEffect(() => {
     appointmentService.getAppointments().then((response) => {
-      setAppointments(response.data);
+      const filteredWeek = response.data.filter((day) => {
+        return (
+          formatDate(day).finalStart > moment().format("YYYY-MM-DD HH:mm:ss") &&
+          formatDate(day).finalStart <
+            moment().add(6, "days").format("YYYY-MM-DD HH:mm:ss")
+        );
+      });
+
+      setAppointments(filteredWeek);
     });
   }, []);
 
   const handleOnClick = (e) => {
     console.log(e.target.value);
+
     setSelected(e.target.value);
   };
 
-  const groupPerDay = () => {
-    let listHours = [];
-
-    for (let property in groupByDay) {
-      groupByDay[property].map((date, index) =>
-        listHours.push(
-          <button
-            key={`${property} ${index}`}
-            value={
-              formatDate(date).finalStart + " " + formatDate(date).finalEnd
-            }
-            onClick={handleOnClick}
-            disabled={date.Taken}
-          >
-            {formatDate(date).hourStart + ":" + formatDate(date).minutesStart}
-          </button>
-        )
+  const renderItems = (group) =>
+    groupByDay[group].map((date, index) => {
+      return (
+        <Button
+          key={`${group} ${index}`}
+          value={formatDate(date).finalStart + " " + formatDate(date).finalEnd}
+          onClick={handleOnClick}
+          disabled={date.Taken}
+        >
+          {formatDate(date).hourStart + ":" + formatDate(date).minutesStart}
+        </Button>
       );
-    }
+    });
 
-    return listHours;
+  const findDay = (day) => {
+    const week = enumerateDaysBetweenDates(formatDate(Date.now()));
+    return week[day];
   };
 
   return (
     <div className="current-appointment">
-      {appointments.length > 0 && <div>{groupPerDay()}</div>}
+      {appointments.length > 0 && (
+        <Row>
+          {Object.keys(groupByDay).map((group, index) => {
+            let date;
+            date = findDay(group);
+            return (
+              <div key={index} style={{ flexGrow: "1", display: "flex" }}>
+                <Col>
+                  <h5>{date && date.day}</h5>
+                  <h5>
+                    {date && date.number}
+                    {date && date.month}
+                  </h5>
+                  <div style={{ display: "grid" }}>{renderItems(group)}</div>
+                </Col>
+              </div>
+            );
+          })}
+        </Row>
+      )}
       {selected && <button>Ok</button>}
     </div>
   );
