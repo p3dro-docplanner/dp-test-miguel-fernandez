@@ -8,6 +8,8 @@ import {
 import { Row, Col, Button } from "antd";
 import moment from "moment";
 
+const STANDARD_FORMAT_DATE = "YYYY-MM-DD HH:mm:ss";
+
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
   const [selected, setSelected] = useState("");
@@ -15,18 +17,21 @@ export const Calendar = () => {
   const groupByDay = groupsByDay(appointments);
 
   useEffect(() => {
+    //control when click on next week
     appointmentService.getAppointments().then((response) => {
-      const filteredWeek = response.data.filter((day) => {
-        return (
-          formatDate(day).finalStart > moment().format("YYYY-MM-DD HH:mm:ss") &&
-          formatDate(day).finalStart <
-            moment().add(6, "days").format("YYYY-MM-DD HH:mm:ss")
-        );
-      });
-
+      const filteredWeek = filteredAppointments(response.data);
       setAppointments(filteredWeek);
     });
   }, []);
+
+  const filteredAppointments = (data) =>
+    data.filter((day) => {
+      return (
+        formatDate(day).finalStart >= moment().format(STANDARD_FORMAT_DATE) &&
+        formatDate(day).finalStart <
+          moment().add(6, "days").format(STANDARD_FORMAT_DATE)
+      );
+    });
 
   const handleOnClick = (e) => {
     console.log(e.target.value);
