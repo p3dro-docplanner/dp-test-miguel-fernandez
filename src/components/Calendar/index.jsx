@@ -13,6 +13,7 @@ const STANDARD_FORMAT_DATE = "YYYY-MM-DD HH:mm:ss";
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
   const [selected, setSelected] = useState("");
+  const [showMore, setShowMore] = useState(false);
 
   const groupByDay = groupsByDay(appointments);
 
@@ -24,6 +25,13 @@ export const Calendar = () => {
     });
   }, []);
 
+  const handleShowMore = () => setShowMore(!showMore);
+
+  const handleOnClick = (e) => {
+    console.log(e.target.value);
+    setSelected(e.target.value);
+  };
+
   const filteredAppointments = (data) =>
     data.filter((day) => {
       return (
@@ -32,31 +40,26 @@ export const Calendar = () => {
           moment().add(6, "days").format(STANDARD_FORMAT_DATE)
       );
     });
-
-  const handleOnClick = (e) => {
-    console.log(e.target.value);
-
-    setSelected(e.target.value);
+  const findDay = (day) => {
+    const week = enumerateDaysBetweenDates(formatDate(Date.now()));
+    return week[day];
   };
 
   const renderItems = (group) =>
     groupByDay[group].map((date, index) => {
       return (
         <Button
+          type="primary"
           key={`${group} ${index}`}
           value={formatDate(date).finalStart + " " + formatDate(date).finalEnd}
           onClick={handleOnClick}
           disabled={date.Taken}
+          className="button-calendar"
         >
           {formatDate(date).hourStart + ":" + formatDate(date).minutesStart}
         </Button>
       );
     });
-
-  const findDay = (day) => {
-    const week = enumerateDaysBetweenDates(formatDate(Date.now()));
-    return week[day];
-  };
 
   return (
     <div className="current-appointment">
@@ -66,21 +69,26 @@ export const Calendar = () => {
             let date;
             date = findDay(group);
             return (
-              <div key={index} style={{ flexGrow: "1", display: "flex" }}>
-                <Col>
-                  <h5>{date && date.day}</h5>
-                  <h5>
-                    {date && date.number}
-                    {date && date.month}
+              <div key={index} className="calendar">
+                <Col className={showMore ? "show-more" : "show-less"}>
+                  <h5 className="week-day">{date && date.day}</h5>
+                  <h5 className="date">
+                    {date && `${date.number}  ${date.month}`}
                   </h5>
-                  <div style={{ display: "grid" }}>{renderItems(group)}</div>
+                  <div className={showMore ? "column-show-more" : "column"}>
+                    {renderItems(group)}
+                  </div>
                 </Col>
               </div>
             );
           })}
         </Row>
       )}
-      {selected && <button>Ok</button>}
+      <div className="button-more">
+        <Button onClick={handleShowMore}>
+          {showMore ? "Show less" : "Show more"}
+        </Button>
+      </div>
     </div>
   );
 };

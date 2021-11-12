@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 const App = () => {
   return (
     <div className="layout">
-      <Appointment></Appointment>
+      <Appointment />
     </div>
   );
 };

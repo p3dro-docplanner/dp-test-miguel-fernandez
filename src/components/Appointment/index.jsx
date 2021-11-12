@@ -3,6 +3,7 @@ import { CalendarOutlined } from "@ant-design/icons";
 
 import { Label } from "../Label";
 import { Calendar } from "../Calendar";
+import { Reschedule } from "../Reschedule";
 
 export const Appointment = () => {
   return (
@@ -18,7 +19,8 @@ export const Appointment = () => {
       <Label
         text={"You can change the appointment for when it suits you better"}
       />
-      <Calendar></Calendar>
+      <Calendar />
+      <Reschedule></Reschedule>
     </div>
   );
 };
