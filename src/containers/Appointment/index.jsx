@@ -8,7 +8,7 @@ import moment from "moment";
 
 export const Appointment = () => {
 
-  const formatDateAppointment = (date) => `On ${moment(date).format("LLLL")}`;
+  const formatDateAppointment = (date) => moment(date).format("dddd, DD MMM YYYY [at] HH:mm");
 
   return (
     <div>

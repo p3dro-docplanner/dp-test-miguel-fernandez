@@ -8,7 +8,7 @@ import moment from "moment";
 export const CurrentAppointment = () => {
   const appointment = useSelector((state) => state.appointment.appointment);
 
-  const formatDateAppointment = (date) => `On ${moment(date).format("LLLL")}`;
+  const formatDateAppointment = (date) => `On ${moment(date).format("dddd, DD MMM YYYY [at] HH:mm")}`;
 
   return (
     <div data-testid="appointment">

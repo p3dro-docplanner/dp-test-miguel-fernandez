@@ -4,11 +4,13 @@ import { Button } from "antd";
 
 import { Label } from "../Label";
 import { appointmentActions } from "../../store/slices/appointmentSlice";
+import moment from "moment";
 
 export const Reschedule = ({ formatDateAppointment }) => {
   const dispatch = useDispatch();
   const appointment = useSelector((state) => state.appointment);
   const newAppointment = formatDateAppointment(appointment.draft);
+  const formatted = moment(appointment.draft);
 
   const modifyHandler = (data) => {
        return setTimeout(() => {
@@ -16,7 +18,7 @@ export const Reschedule = ({ formatDateAppointment }) => {
     }, 5000)
   }
 
-  const handleOnClick = () => modifyHandler(newAppointment);
+  const handleOnClick = () => modifyHandler(formatted);
 
   return appointment.changed ? (
     <div>

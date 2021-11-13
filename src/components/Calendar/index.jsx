@@ -102,7 +102,7 @@ export const Calendar = () => {
       { appointments.length > 0 &&
         <div className={!showMore ? "button-more" : "button-less"}>
           <Button onClick={handleShowMore}>
-            {showMore ? "Show less" : "Show more"}
+            {showMore ? "Less" : "Show more hours"}
           </Button>
         </div>
       }
