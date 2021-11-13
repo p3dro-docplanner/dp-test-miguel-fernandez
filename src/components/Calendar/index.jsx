@@ -84,7 +84,7 @@ export const Calendar = () => {
           <Button>{">"}</Button>
         </Row>
       )}
-      <div className="button-more">
+      <div className={!showMore ? "button-more" : "button-less"}>
         <Button onClick={handleShowMore}>
           {showMore ? "Show less" : "Show more"}
         </Button>
