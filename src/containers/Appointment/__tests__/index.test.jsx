@@ -9,7 +9,7 @@ const store = configureStore({
   reducer: { appointment: appointmentSlice.reducer },
 });
 
-describe("Appointment Component", () => {
+describe("Appointment Container", () => {
   test("renders appointment component", () => {
     render(
       <Provider store={store}>

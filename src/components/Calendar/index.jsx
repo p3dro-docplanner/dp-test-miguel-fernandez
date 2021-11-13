@@ -17,7 +17,12 @@ export const Calendar = () => {
   const [showMore, setShowMore] = useState(false);
   const dispatch = useDispatch();
   const [iterator, setIterator] = useState(0);
-  const [dateFetch, setDateFetch] = useState('20211115');
+
+  const monday = moment().day(0).add(8,'days').format('YYYYMMDD');
+
+
+  const [dateFetch, setDateFetch] = useState(monday);
+  const nextWeek = moment(dateFetch).add(7,'days').format('YYYYMMDD');
 
   const modifyHandler = (data) =>
     dispatch(appointmentActions.updateDraft(data));
@@ -25,12 +30,11 @@ export const Calendar = () => {
   const groupByDay = groupsByDay(appointments);
 
   useEffect(() => {
-    //control when click on next week
-    appointmentService.getAppointments().then((response) => {
+    appointmentService.getAppointments(dateFetch).then((response) => {
       const filteredWeek = filteredAppointments(response.data);
       setAppointments(filteredWeek);
     });
-  }, []);
+  }, [dateFetch]);
 
   const handleShowMore = () => setShowMore(!showMore);
 
@@ -76,7 +80,7 @@ export const Calendar = () => {
 
   return (
     <div className="current-appointment">
-      {appointments.length > 0 && (
+      {appointments.length > 0 ? (
         <Row>
           <Button>{"<"}</Button>
           {Object.keys(groupByDay).map((group, index) => {
@@ -95,14 +99,16 @@ export const Calendar = () => {
               </div>
             );
           })}
-          <Button onClick={() => handleNext(moment(dateFetch).add(7,'days').format('YYYYMMDD'))}>{">"}</Button>
+          <Button onClick={() => handleNext(nextWeek)}>{">"}</Button>
         </Row>
-      )}
-      <div className={!showMore ? "button-more" : "button-less"}>
-        <Button onClick={handleShowMore}>
-          {showMore ? "Show less" : "Show more"}
-        </Button>
-      </div>
+      ) : <div>No dates available</div>}
+      { appointments.length > 0 &&
+        <div className={!showMore ? "button-more" : "button-less"}>
+          <Button onClick={handleShowMore}>
+            {showMore ? "Show less" : "Show more"}
+          </Button>
+        </div>
+      }
     </div>
   );
 };

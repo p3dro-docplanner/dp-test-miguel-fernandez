@@ -1,5 +1,5 @@
 import React from "react";
-import { Appointment } from "./components/Appointment";
+import { Appointment } from "./containers/Appointment";
 import "./index.css";
 import "antd/dist/antd.css";
 

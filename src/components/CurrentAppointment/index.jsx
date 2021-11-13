@@ -2,12 +2,10 @@ import React from "react";
 import { CalendarOutlined } from "@ant-design/icons";
 
 import { Label } from "../Label";
-import { Calendar } from "../Calendar";
-import { Reschedule } from "../Reschedule";
 import { useSelector } from "react-redux";
 import moment from "moment";
 
-export const Appointment = () => {
+export const CurrentAppointment = () => {
   const appointment = useSelector((state) => state.appointment.appointment);
 
   const formatDateAppointment = (date) => `On ${moment(date).format("LLLL")}`;
@@ -25,8 +23,6 @@ export const Appointment = () => {
       <Label
         text={"You can change the appointment for when it suits you better"}
       />
-      <Calendar />
-      <Reschedule formatDateAppointment={formatDateAppointment}></Reschedule>
     </div>
   );
 };
