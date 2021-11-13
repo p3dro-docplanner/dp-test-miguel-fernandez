@@ -13,7 +13,6 @@ import moment from "moment";
 
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
-  const [selected, setSelected] = useState("");
   const [showMore, setShowMore] = useState(false);
   const dispatch = useDispatch();
   const [iterator, setIterator] = useState(0);
@@ -40,7 +39,6 @@ export const Calendar = () => {
 
   const handleOnClick = (date) => {
     modifyHandler(parseDate(date).format("YYYY-MM-DD HH:mm:ss"));
-    setSelected(date);
   };
 
   const filteredAppointments = (data) =>
@@ -55,7 +53,6 @@ export const Calendar = () => {
 
   const renderItems = (group) =>
     groupByDay[group].map((date, index) => {
-      console.log(groupByDay);
       return (
         <Button
           type="primary"

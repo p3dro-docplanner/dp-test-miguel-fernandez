@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class AppointmentService {
-  getAppointments(date = "20211115") {
+  getAppointments(date) {
     return axios
       .get(`${process.env.REACT_APP_API}/GetWeeklySlots/${date}`)
       .then((response) => {

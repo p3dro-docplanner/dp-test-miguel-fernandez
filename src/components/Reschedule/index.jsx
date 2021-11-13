@@ -10,8 +10,11 @@ export const Reschedule = ({ formatDateAppointment }) => {
   const appointment = useSelector((state) => state.appointment);
   const newAppointment = formatDateAppointment(appointment.draft);
 
-  const modifyHandler = (data) =>
-    dispatch(appointmentActions.updateAppointment(data));
+  const modifyHandler = (data) => {
+       return setTimeout(() => {
+        dispatch(appointmentActions.updateAppointment(data));
+    }, 5000)
+  }
 
   const handleOnClick = () => modifyHandler(newAppointment);
 
