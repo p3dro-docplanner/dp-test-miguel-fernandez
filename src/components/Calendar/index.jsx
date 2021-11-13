@@ -9,12 +9,15 @@ import {
 import { Row, Col, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { appointmentActions } from "../../store/slices/appointmentSlice";
+import moment from "moment";
 
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
   const [selected, setSelected] = useState("");
   const [showMore, setShowMore] = useState(false);
   const dispatch = useDispatch();
+  const [iterator, setIterator] = useState(0);
+  const [dateFetch, setDateFetch] = useState('20211115');
 
   const modifyHandler = (data) =>
     dispatch(appointmentActions.updateDraft(data));
@@ -38,8 +41,9 @@ export const Calendar = () => {
 
   const filteredAppointments = (data) =>
     data.filter((day) => true === isWeekRange(day));
+
   const findDay = (day) => {
-    const week = enumerateDaysBetweenDates(parseDate(Date.now()));
+    const week = enumerateDaysBetweenDates(parseDate(Date.now()), iterator);
     return week[day];
   };
 
@@ -47,6 +51,7 @@ export const Calendar = () => {
 
   const renderItems = (group) =>
     groupByDay[group].map((date, index) => {
+      console.log(groupByDay);
       return (
         <Button
           type="primary"
@@ -59,6 +64,15 @@ export const Calendar = () => {
         </Button>
       );
     });
+
+    const handleNext = (date) => {
+      appointmentService.getAppointments(date).then((response) => {
+        const filteredWeek = filteredAppointments(response.data);
+        setAppointments(filteredWeek);
+        setIterator(iterator + 1);
+        setDateFetch(moment(date).format('YYYYMMDD'));
+      });
+    }
 
   return (
     <div className="current-appointment">
@@ -81,7 +95,7 @@ export const Calendar = () => {
               </div>
             );
           })}
-          <Button>{">"}</Button>
+          <Button onClick={() => handleNext(moment(dateFetch).add(7,'days').format('YYYYMMDD'))}>{">"}</Button>
         </Row>
       )}
       <div className={!showMore ? "button-more" : "button-less"}>
