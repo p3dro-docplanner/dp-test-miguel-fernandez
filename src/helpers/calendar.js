@@ -1,7 +1,5 @@
 import moment from "moment";
 
-const STANDARD_FORMAT_DATE = "YYYY-MM-DD";
-
 export const groupsByDay = (appointments) => {
   return (
     appointments &&
