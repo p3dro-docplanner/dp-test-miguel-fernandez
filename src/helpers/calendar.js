@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const STANDARD_FORMAT_DATE = "YYYY-MM-DD HH:mm:ss";
+const STANDARD_FORMAT_DATE = "YYYY-MM-DD";
 
 export const groupsByDay = (appointments) => {
   return (
@@ -25,30 +25,8 @@ export const groupsByDay = (appointments) => {
   );
 };
 
-//buscar una forma más rápida
-export const formatDate = (date) => {
-  const startDate = moment(date.Start);
-  const endDate = moment(date.End);
-
-  const hourStart = startDate.format("HH");
-  const day = startDate.format("DD");
-  const month = startDate.format("MMM");
-
-  const minutesStart = startDate.format("mm");
-  const weekDay = startDate.format("ddd");
-
-  const finalStart = startDate.format("YYYY-MM-DD HH:mm:ss");
-  const finalEnd = endDate.format("YYYY-MM-DD HH:mm:ss");
-
-  return {
-    hourStart,
-    day,
-    month,
-    minutesStart,
-    weekDay,
-    finalStart,
-    finalEnd,
-  };
+export const parseDate = (date) => {
+  return moment(date);
 };
 
 export const enumerateDaysBetweenDates = (date) => {
@@ -70,7 +48,19 @@ export const enumerateDaysBetweenDates = (date) => {
   return dates;
 };
 
-export const isWeekRange = (day) =>
-  formatDate(day).finalStart >= moment().format(STANDARD_FORMAT_DATE) &&
-  formatDate(day).finalStart <
-    moment().add(6, "days").format(STANDARD_FORMAT_DATE);
+export const isWeekRange = (day) => {
+  /*   console.log(moment().format("YYYY-MM-DD"));
+  console.log(moment().add(5, "days").format("YYYY-MM-DD"));
+  // true
+
+  return moment("2021-11-15").isBetween(
+    moment().format("YYYY-MM-DD"),
+    "2021-11-17"
+  );*/
+  return (
+    parseDate(day).format(STANDARD_FORMAT_DATE) >=
+      moment().format(STANDARD_FORMAT_DATE) &&
+    parseDate(day).format(STANDARD_FORMAT_DATE) <=
+      moment().add(6, "days").format(STANDARD_FORMAT_DATE)
+  );
+};

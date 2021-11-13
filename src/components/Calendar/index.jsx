@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import appointmentService from "../../services/appointmentService";
 import {
   groupsByDay,
-  formatDate,
+  parseDate,
   enumerateDaysBetweenDates,
   isWeekRange,
 } from "../../helpers/calendar";
@@ -17,7 +17,7 @@ export const Calendar = () => {
   const dispatch = useDispatch();
 
   const modifyHandler = (data) =>
-    dispatch(appointmentActions.updateAppointment(data));
+    dispatch(appointmentActions.updateDraft(data));
 
   const groupByDay = groupsByDay(appointments);
 
@@ -32,18 +32,17 @@ export const Calendar = () => {
   const handleShowMore = () => setShowMore(!showMore);
 
   const handleOnClick = (date) => {
-    modifyHandler(date);
+    modifyHandler(parseDate(date).format("YYYY-MM-DD HH:mm:ss"));
     setSelected(date);
   };
 
   const filteredAppointments = (data) => data.filter((day) => isWeekRange(day));
   const findDay = (day) => {
-    const week = enumerateDaysBetweenDates(formatDate(Date.now()));
+    const week = enumerateDaysBetweenDates(parseDate(Date.now()));
     return week[day];
   };
 
-  const parseDateButton = (date) =>
-    formatDate(date).hourStart + ":" + formatDate(date).minutesStart;
+  const parseDateButton = (date) => parseDate(date.Start).format("HH:mm");
 
   const renderItems = (group) =>
     groupByDay[group].map((date, index) => {
@@ -51,7 +50,7 @@ export const Calendar = () => {
         <Button
           type="primary"
           key={`${group} ${index}`}
-          onClick={() => handleOnClick(formatDate(date).finalStart)}
+          onClick={() => handleOnClick(date.Start)}
           disabled={date.Taken}
           className="button-calendar"
         >

@@ -1,8 +1,30 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Button } from "antd";
 
-export const Reschedule = () => {
+import { Label } from "../Label";
+import { appointmentActions } from "../../store/slices/appointmentSlice";
+
+export const Reschedule = ({ formatDateAppointment }) => {
+  const dispatch = useDispatch();
   const appointment = useSelector((state) => state.appointment);
+  const newAppointment = formatDateAppointment(appointment.draft);
 
-  return appointment.changed ? <div>Here</div> : <div>Fake</div>;
+  const modifyHandler = (data) =>
+    dispatch(appointmentActions.updateAppointment(data));
+
+  const handleOnClick = () => modifyHandler(newAppointment);
+
+  return appointment.changed ? (
+    <div>
+      <Label text={"Reschedule"} bold></Label>
+      <Label text={"Click the button to confirm"}></Label>
+
+      <Button className="confirm-button" type="primary" onClick={handleOnClick}>
+        {newAppointment}
+      </Button>
+    </div>
+  ) : (
+    ""
+  );
 };

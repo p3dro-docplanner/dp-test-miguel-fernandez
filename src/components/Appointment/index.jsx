@@ -26,7 +26,7 @@ export const Appointment = () => {
         text={"You can change the appointment for when it suits you better"}
       />
       <Calendar />
-      <Reschedule></Reschedule>
+      <Reschedule formatDateAppointment={formatDateAppointment}></Reschedule>
     </div>
   );
 };
