@@ -57,10 +57,7 @@ export const isWeekRange = (day) => {
     moment().format("YYYY-MM-DD"),
     "2021-11-17"
   );*/
-  return (
-    parseDate(day).format(STANDARD_FORMAT_DATE) >=
-      moment().format(STANDARD_FORMAT_DATE) &&
-    parseDate(day).format(STANDARD_FORMAT_DATE) <=
-      moment().add(6, "days").format(STANDARD_FORMAT_DATE)
-  );
+  console.log(day);
+  console.log(moment().isSameOrBefore("2021-11-17"));
+  return parseDate(day.Start).isSameOrBefore("2021-11-17");
 };
