@@ -2,18 +2,22 @@ import React, { useState, useEffect } from "react";
 import appointmentService from "../../services/appointmentService";
 import {
   groupsByDay,
-  formatDate,
+  parseDate,
   enumerateDaysBetweenDates,
+  isWeekRange,
 } from "../../helpers/calendar";
 import { Row, Col, Button } from "antd";
-import moment from "moment";
-
-const STANDARD_FORMAT_DATE = "YYYY-MM-DD HH:mm:ss";
+import { useDispatch } from "react-redux";
+import { appointmentActions } from "../../store/slices/appointmentSlice";
 
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
   const [selected, setSelected] = useState("");
   const [showMore, setShowMore] = useState(false);
+  const dispatch = useDispatch();
+
+  const modifyHandler = (data) =>
+    dispatch(appointmentActions.updateDraft(data));
 
   const groupByDay = groupsByDay(appointments);
 
@@ -27,23 +31,19 @@ export const Calendar = () => {
 
   const handleShowMore = () => setShowMore(!showMore);
 
-  const handleOnClick = (e) => {
-    console.log(e.target.value);
-    setSelected(e.target.value);
+  const handleOnClick = (date) => {
+    modifyHandler(parseDate(date).format("YYYY-MM-DD HH:mm:ss"));
+    setSelected(date);
   };
 
   const filteredAppointments = (data) =>
-    data.filter((day) => {
-      return (
-        formatDate(day).finalStart >= moment().format(STANDARD_FORMAT_DATE) &&
-        formatDate(day).finalStart <
-          moment().add(6, "days").format(STANDARD_FORMAT_DATE)
-      );
-    });
+    data.filter((day) => true === isWeekRange(day));
   const findDay = (day) => {
-    const week = enumerateDaysBetweenDates(formatDate(Date.now()));
+    const week = enumerateDaysBetweenDates(parseDate(Date.now()));
     return week[day];
   };
+
+  const parseDateButton = (date) => parseDate(date.Start).format("HH:mm");
 
   const renderItems = (group) =>
     groupByDay[group].map((date, index) => {
@@ -51,12 +51,11 @@ export const Calendar = () => {
         <Button
           type="primary"
           key={`${group} ${index}`}
-          value={formatDate(date).finalStart + " " + formatDate(date).finalEnd}
-          onClick={handleOnClick}
+          onClick={() => handleOnClick(date.Start)}
           disabled={date.Taken}
           className="button-calendar"
         >
-          {formatDate(date).hourStart + ":" + formatDate(date).minutesStart}
+          {parseDateButton(date)}
         </Button>
       );
     });
@@ -65,10 +64,9 @@ export const Calendar = () => {
     <div className="current-appointment">
       {appointments.length > 0 && (
         <Row>
-          <Button>Atras</Button>
+          <Button>{"<"}</Button>
           {Object.keys(groupByDay).map((group, index) => {
-            let date;
-            date = findDay(group);
+            const date = findDay(group);
             return (
               <div key={index} className="calendar">
                 <Col className={showMore ? "show-more" : "show-less"}>
@@ -83,10 +81,10 @@ export const Calendar = () => {
               </div>
             );
           })}
-          <Button>Adelante</Button>
+          <Button>{">"}</Button>
         </Row>
       )}
-      <div className="button-more">
+      <div className={!showMore ? "button-more" : "button-less"}>
         <Button onClick={handleShowMore}>
           {showMore ? "Show less" : "Show more"}
         </Button>

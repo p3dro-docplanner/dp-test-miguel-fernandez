@@ -23,29 +23,8 @@ export const groupsByDay = (appointments) => {
   );
 };
 
-export const formatDate = (date) => {
-  const startDate = moment(date.Start);
-  const endDate = moment(date.End);
-
-  const hourStart = startDate.format("HH");
-  const day = startDate.format("DD");
-  const month = startDate.format("MMM");
-
-  const minutesStart = startDate.format("mm");
-  const weekDay = startDate.format("ddd");
-
-  const finalStart = startDate.format("YYYY-MM-DD HH:mm:ss");
-  const finalEnd = endDate.format("YYYY-MM-DD HH:mm:ss");
-
-  return {
-    hourStart,
-    day,
-    month,
-    minutesStart,
-    weekDay,
-    finalStart,
-    finalEnd,
-  };
+export const parseDate = (date) => {
+  return moment(date);
 };
 
 export const enumerateDaysBetweenDates = (date) => {
@@ -65,4 +44,8 @@ export const enumerateDaysBetweenDates = (date) => {
     now.add(1, "days");
   }
   return dates;
+};
+
+export const isWeekRange = (day) => {
+  return parseDate(day.Start).isSameOrBefore(moment().add(6, "days"), "year");
 };
