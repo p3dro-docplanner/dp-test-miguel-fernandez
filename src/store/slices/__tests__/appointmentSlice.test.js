@@ -28,7 +28,7 @@ test('should handle update appoinment correctly', () => {
     )
   })
 
-  test('should handle draft appoinment correctly', () => {
+  test('should handle loader appoinment', () => {
     const previousState = {appointment: "1991-01-12 10:00:00", changed: false, draft: "", loading: false }
     expect(appointmentSlice.reducer(previousState, appointmentActions.changeLoading("1991-01-16 10:00:00"))).toEqual(
       {
