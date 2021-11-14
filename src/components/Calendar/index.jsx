@@ -7,7 +7,7 @@ import {
   isWeekRange,
 } from "../../helpers/calendar";
 import { Row, Col, Button } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { appointmentActions } from "../../store/slices/appointmentSlice";
 import moment from "moment";
 
@@ -17,9 +17,9 @@ export const Calendar = () => {
   const dispatch = useDispatch();
   const [iterator, setIterator] = useState(0);
   const [disabled, setDisabled] = useState(true);
-
   const monday = moment().day(1).format('YYYYMMDD');
 
+  const appointment = useSelector((state) => state.appointment.appointment);
   const [dateFetch, setDateFetch] = useState(monday);
   const nextWeek = moment(dateFetch).add(7,'days').format('YYYYMMDD');
   const previousWeek = moment(dateFetch).subtract(7,'days').format('YYYYMMDD');
@@ -38,8 +38,7 @@ export const Calendar = () => {
   const handleShowMore = () => setShowMore(!showMore);
 
   const handleOnClick = (date) => {
-    const dateToUpdate = parseDate(date).format("YYYY-MM-DD HH:mm:ss")
-    modifyHandler(dateToUpdate);
+    modifyHandler(date);
   };
 
   const filteredAppointments = (data) =>
@@ -58,8 +57,8 @@ export const Calendar = () => {
         <Button
           type="primary"
           key={`${group} ${index}`}
-          onClick={() => handleOnClick(date.Start)}
-          disabled={date.Taken}
+          onClick={() => handleOnClick(parseDate(date.Start).format("YYYY-MM-DD HH:mm:ss"))}
+          disabled={date.Taken || parseDate(date.Start).format("YYYY-MM-DD HH:mm:ss") === appointment }
           className="button-calendar"
         >
           {parseDateButton(date)}
@@ -80,12 +79,12 @@ export const Calendar = () => {
     const handlePrevious = (date) => {
 
       if(iterator - 1  === 0){
-        setDisabled(true);
         appointmentService.getAppointments(date).then((response) => {
         const filteredWeek = filteredAppointments(response.data);
         setAppointments(filteredWeek);
         setIterator(iterator - 1);
         setDateFetch(moment(date).format('YYYYMMDD'));
+        setDisabled(true);
         })
       } else {
       appointmentService.getAppointments(date).then((response) => {

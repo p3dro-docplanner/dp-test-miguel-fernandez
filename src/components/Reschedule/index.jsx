@@ -13,9 +13,11 @@ export const Reschedule = ({ formatDateAppointment }) => {
   const formatted = moment(appointment.draft);
 
   const modifyHandler = (data) => {
+      dispatch(appointmentActions.changeLoading());
        return setTimeout(() => {
+        dispatch(appointmentActions.changeLoading());
         dispatch(appointmentActions.updateAppointment(data.format("YYYY-MM-DD HH:mm:ss")));
-    }, 5000)
+      }, 5000)
   }
 
   const handleOnClick = () => modifyHandler(formatted);
