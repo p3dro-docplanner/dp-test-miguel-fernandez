@@ -17,10 +17,10 @@ export const Calendar = () => {
   const dispatch = useDispatch();
   const [iterator, setIterator] = useState(0);
 
-  const monday = moment().day(0).add(8,'days').format('YYYYMMDD');
+  //const monday = moment().add(1,'days').day(0).format('YYYYMMDD');
+  //console.log(monday);
 
-
-  const [dateFetch, setDateFetch] = useState(monday);
+  const [dateFetch, setDateFetch] = useState('20211115');
   const nextWeek = moment(dateFetch).add(7,'days').format('YYYYMMDD');
 
   const modifyHandler = (data) =>
@@ -33,7 +33,7 @@ export const Calendar = () => {
       const filteredWeek = filteredAppointments(response.data);
       setAppointments(filteredWeek);
     });
-  }, [dateFetch]);
+  }, []);
 
   const handleShowMore = () => setShowMore(!showMore);
 

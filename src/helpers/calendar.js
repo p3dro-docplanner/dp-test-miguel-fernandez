@@ -4,7 +4,7 @@ export const groupsByDay = (appointments) => {
   return (
     appointments &&
     appointments.reduce((acc, date) => {
-      const weekDay = `${moment(date.Start).day() + 1}`;
+      const weekDay = `${moment(date.Start).day()}`;
       let array = ["0", "1", "2", "3", "4", "5", "6"];
 
       if (!acc[weekDay]) {
