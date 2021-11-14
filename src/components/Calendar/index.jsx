@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
+import { Row, Col, Button } from "antd";
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
 import appointmentService from "../../services/appointmentService";
+import { appointmentActions } from "../../store/slices/appointmentSlice";
 import {
   groupsByDay,
   parseDate,
   enumerateDaysBetweenDates,
   isWeekRange,
 } from "../../helpers/calendar";
-import { Row, Col, Button } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { appointmentActions } from "../../store/slices/appointmentSlice";
-import moment from "moment";
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
   const [showMore, setShowMore] = useState(false);
-  const dispatch = useDispatch();
   const [iterator, setIterator] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const monday = moment().day(1).format('YYYYMMDD');
-
-  const appointment = useSelector((state) => state.appointment.appointment);
   const [dateFetch, setDateFetch] = useState(monday);
+
+  const dispatch = useDispatch();
+  const appointment = useSelector((state) => state.appointment.appointment);
+
   const nextWeek = moment(dateFetch).add(7,'days').format('YYYYMMDD');
   const previousWeek = moment(dateFetch).subtract(7,'days').format('YYYYMMDD');
 
@@ -38,12 +39,9 @@ export const Calendar = () => {
 
   const handleShowMore = () => setShowMore(!showMore);
 
-  const handleOnClick = (date) => {
-    modifyHandler(date);
-  };
+  const handleOnClick = (date) => modifyHandler(date)
 
-  const filteredAppointments = (data) =>
-    data.filter((day) => true === isWeekRange(day));
+  const filteredAppointments = (data) => data.filter((day) => isWeekRange(day));
 
   const findDay = (day) => {
     const week = enumerateDaysBetweenDates(parseDate(Date.now()), iterator);
@@ -67,35 +65,31 @@ export const Calendar = () => {
       );
     });
 
-    const handleNext = (date) => {
+    const handlerDates = (date, next = false) => {
       appointmentService.getAppointments(date).then((response) => {
-        const filteredWeek = filteredAppointments(response.data);
-        setAppointments(filteredWeek);
+       const filteredWeek = filteredAppointments(response.data);
+       setAppointments(filteredWeek);
+       if(next){
         setIterator(iterator + 1);
-        setDateFetch(moment(date).format('YYYYMMDD'));
-        setDisabled(false);
-      });
+       } else {
+        setIterator(iterator - 1);
+       }
+       setDateFetch(moment(date).format('YYYYMMDD'));
+     });
+   }
+
+    const handleNext = (date, next) => {
+      handlerDates(date, next);
+      setDisabled(false);
     }
 
     const handlePrevious = (date) => {
-
+      handlerDates(date);
       if(iterator - 1  === 0){
-        appointmentService.getAppointments(date).then((response) => {
-        const filteredWeek = filteredAppointments(response.data);
-        setAppointments(filteredWeek);
-        setIterator(iterator - 1);
-        setDateFetch(moment(date).format('YYYYMMDD'));
         setDisabled(true);
-        })
       } else {
-      appointmentService.getAppointments(date).then((response) => {
-        const filteredWeek = filteredAppointments(response.data);
-        setAppointments(filteredWeek);
-        setIterator(iterator - 1);
-        setDateFetch(moment(date).format('YYYYMMDD'));
         setDisabled(false);
-      });
-    }
+      }
   }
 
   return (
@@ -119,7 +113,7 @@ export const Calendar = () => {
               </div>
             );
           })}
-          <Button onClick={() => handleNext(nextWeek)}><RightOutlined /></Button>
+          <Button onClick={() => handleNext(nextWeek, true)}><RightOutlined /></Button>
         </Row>
       ) : <div>No dates available</div>}
       { appointments.length > 0 &&

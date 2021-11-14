@@ -3,13 +3,10 @@ import { CalendarOutlined } from "@ant-design/icons";
 import {Spin} from 'antd'
 import { Label } from "../Label";
 import { useSelector } from "react-redux";
-import moment from "moment";
 
-export const CurrentAppointment = () => {
+export const CurrentAppointment = ( { formatDateAppointment } ) => {
   const appointment = useSelector((state) => state.appointment.appointment);
   const loading = useSelector((state) => state.appointment.loading);
-
-  const formatDateAppointment = (date) => `On ${moment(date).format("dddd, DD MMM YYYY [at] HH:mm")}`;
 
   return (
     <div data-testid="appointment">

@@ -9,11 +9,18 @@ const store = configureStore({
   reducer: { appointment: appointmentSlice.reducer },
 });
 
+
+let onActionMock = jest.fn();
+
+beforeEach(function() {
+  onActionMock.mockClear();
+});
+
 describe("Appointment Component", () => {
   test("renders appointment component", () => {
     render(
       <Provider store={store}>
-        <CurrentAppointment />
+        <CurrentAppointment formatDateAppointment={onActionMock}/>
       </Provider>
     );
     expect(screen.getByTestId("appointment")).toBeInTheDocument();
