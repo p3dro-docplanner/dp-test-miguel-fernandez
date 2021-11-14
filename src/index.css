@@ -107,3 +107,8 @@ h5 {
 .margin-spin {
   margin-right: 10px!important;
 }
+
+.ant-btn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

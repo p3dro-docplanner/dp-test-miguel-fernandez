@@ -10,6 +10,7 @@ import { Row, Col, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { appointmentActions } from "../../store/slices/appointmentSlice";
 import moment from "moment";
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 export const Calendar = () => {
   const [appointments, setAppointments] = useState([]);
@@ -101,7 +102,7 @@ export const Calendar = () => {
     <div className="current-appointment">
       {appointments.length > 0 ? (
         <Row>
-          <Button disabled={disabled} onClick={() => handlePrevious(previousWeek)}>{"<"}</Button>
+          <Button disabled={disabled} onClick={() => handlePrevious(previousWeek)}><LeftOutlined /></Button>
           {Object.keys(groupByDay).map((group, index) => {
             const date = findDay(group);
             return (
@@ -118,7 +119,7 @@ export const Calendar = () => {
               </div>
             );
           })}
-          <Button onClick={() => handleNext(nextWeek)}>{">"}</Button>
+          <Button onClick={() => handleNext(nextWeek)}><RightOutlined /></Button>
         </Row>
       ) : <div>No dates available</div>}
       { appointments.length > 0 &&
