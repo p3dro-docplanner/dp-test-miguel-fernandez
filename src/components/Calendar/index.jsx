@@ -19,6 +19,7 @@ export const Calendar = () => {
   const [disabled, setDisabled] = useState(true);
   const monday = moment().day(1).format('YYYYMMDD');
   const [dateFetch, setDateFetch] = useState(monday);
+  const [loadingCalendar, setLoadingCalendar] = useState(true);
 
   const dispatch = useDispatch();
   const appointment = useSelector((state) => state.appointment.appointment);
@@ -34,6 +35,7 @@ export const Calendar = () => {
     appointmentService.getAppointments(dateFetch).then((response) => {
       const filteredWeek = filteredAppointments(response.data);
       setAppointments(filteredWeek);
+      setLoadingCalendar(false);
     });
   }, [dateFetch]);
 
@@ -94,7 +96,7 @@ export const Calendar = () => {
 
   return (
     <div className="current-appointment">
-      {appointments.length > 0 ? (
+      {appointments.length > 0 &&  !loadingCalendar ? (
         <Row>
           <Button disabled={disabled} onClick={() => handlePrevious(previousWeek)}><LeftOutlined /></Button>
           {Object.keys(groupByDay).map((group, index) => {
@@ -115,7 +117,7 @@ export const Calendar = () => {
           })}
           <Button onClick={() => handleNext(nextWeek, true)}><RightOutlined /></Button>
         </Row>
-      ) : <div>No dates available</div>}
+      ) : !loadingCalendar ? <div>No dates available</div>: <div>Loading...</div>}
       { appointments.length > 0 &&
         <div className={!showMore ? "button-more" : "button-less"}>
           <Button onClick={handleShowMore}>
