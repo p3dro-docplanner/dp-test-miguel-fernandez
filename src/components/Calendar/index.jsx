@@ -16,16 +16,16 @@ export const Calendar = () => {
   const [showMore, setShowMore] = useState(false);
   const dispatch = useDispatch();
   const [iterator, setIterator] = useState(0);
+  const [disabled, setDisabled] = useState(true);
 
-  //const monday = moment().add(1,'days').day(0).format('YYYYMMDD');
-  //console.log(monday);
+  const monday = moment().day(1).format('YYYYMMDD');
 
-  const [dateFetch, setDateFetch] = useState('20211115');
+  const [dateFetch, setDateFetch] = useState(monday);
   const nextWeek = moment(dateFetch).add(7,'days').format('YYYYMMDD');
+  const previousWeek = moment(dateFetch).subtract(7,'days').format('YYYYMMDD');
 
-  const modifyHandler = (data) =>
-    dispatch(appointmentActions.updateDraft(data));
-
+  const modifyHandler = (data) => dispatch(appointmentActions.updateDraft(data));
+  
   const groupByDay = groupsByDay(appointments);
 
   useEffect(() => {
@@ -33,12 +33,13 @@ export const Calendar = () => {
       const filteredWeek = filteredAppointments(response.data);
       setAppointments(filteredWeek);
     });
-  }, []);
+  }, [dateFetch]);
 
   const handleShowMore = () => setShowMore(!showMore);
 
   const handleOnClick = (date) => {
-    modifyHandler(parseDate(date).format("YYYY-MM-DD HH:mm:ss"));
+    const dateToUpdate = parseDate(date).format("YYYY-MM-DD HH:mm:ss")
+    modifyHandler(dateToUpdate);
   };
 
   const filteredAppointments = (data) =>
@@ -72,14 +73,36 @@ export const Calendar = () => {
         setAppointments(filteredWeek);
         setIterator(iterator + 1);
         setDateFetch(moment(date).format('YYYYMMDD'));
+        setDisabled(false);
       });
     }
+
+    const handlePrevious = (date) => {
+
+      if(iterator - 1  === 0){
+        setDisabled(true);
+        appointmentService.getAppointments(date).then((response) => {
+        const filteredWeek = filteredAppointments(response.data);
+        setAppointments(filteredWeek);
+        setIterator(iterator - 1);
+        setDateFetch(moment(date).format('YYYYMMDD'));
+        })
+      } else {
+      appointmentService.getAppointments(date).then((response) => {
+        const filteredWeek = filteredAppointments(response.data);
+        setAppointments(filteredWeek);
+        setIterator(iterator - 1);
+        setDateFetch(moment(date).format('YYYYMMDD'));
+        setDisabled(false);
+      });
+    }
+  }
 
   return (
     <div className="current-appointment">
       {appointments.length > 0 ? (
         <Row>
-          <Button>{"<"}</Button>
+          <Button disabled={disabled} onClick={() => handlePrevious(previousWeek)}>{"<"}</Button>
           {Object.keys(groupByDay).map((group, index) => {
             const date = findDay(group);
             return (

@@ -12,7 +12,7 @@ export const Appointment = () => {
 
   return (
     <div>
-      <CurrentAppointment></CurrentAppointment>
+      <CurrentAppointment />
       <Calendar />
       <Reschedule formatDateAppointment={formatDateAppointment}></Reschedule>
     </div>

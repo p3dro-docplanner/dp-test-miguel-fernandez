@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import appointmentService from "../../services/appointmentService";
-// do same updateDraft with simulation loading
+
 export const appointmentSlice = createSlice({
   name: "appointment",
   initialState: { appointment: "1991-01-12", changed: false, draft: "" },
