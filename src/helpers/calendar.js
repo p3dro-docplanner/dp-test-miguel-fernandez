@@ -1,26 +1,31 @@
 import moment from "moment";
 
 export const groupsByDay = (appointments) => {
-  return (
-    appointments &&
-    appointments.reduce((acc, date) => {
-      const weekDay = `${moment(date.Start).day()}`;
-      let array = ["0", "1", "2", "3", "4", "5", "6"];
-
-      if (!acc[weekDay]) {
-        acc[weekDay] = [];
-      }
-
-      acc[weekDay].push(date);
-      for (let i in array) {
-        if (!acc.hasOwnProperty(i)) {
-          acc[i] = [];
+  
+  if(appointments.length > 0) {
+    let week = [];
+    for( let i = 0 ; i < 7; i++ ){
+      week.push(moment(appointments[0].Start).add(i, 'days').format('DD'));
+    }
+    return (
+      appointments &&
+      appointments.reduce((acc, date) => {
+        const weekDay = `${moment(date.Start).format('DD')}`;
+        if (!acc[weekDay]) {
+          acc[weekDay] = [];
         }
-      }
 
-      return acc;
-    }, {})
-  );
+        acc[weekDay].push(date);
+        for (let i in week) {
+          if (!acc.hasOwnProperty(week[i])) {
+            acc[week[i]] = [];
+          }
+        }
+
+        return acc;
+      }, {})
+    );
+  }
 };
 
 export const parseDate = (date) => {

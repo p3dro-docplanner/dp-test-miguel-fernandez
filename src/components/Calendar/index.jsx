@@ -45,9 +45,10 @@ export const Calendar = () => {
 
   const filteredAppointments = (data) => data.filter((day) => isWeekRange(day));
 
-  const findDay = (day) => {
-    const week = enumerateDaysBetweenDates(parseDate(Date.now()), iterator);
-    return week[day];
+  const findDay = (date) => {
+    const week = enumerateDaysBetweenDates(parseDate(moment()), iterator);
+    const filtered = week.filter(day => day.number === date)
+    return filtered && filtered[0];
   };
 
   const parseDateButton = (date) => parseDate(date.Start).format("HH:mm");
