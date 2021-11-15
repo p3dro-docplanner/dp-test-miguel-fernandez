@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import appointmentService from "../../services/appointmentService";
 
-const initialState = { appointment: "1991-01-12", changed: false, draft: "", loading: false }
+const initialState = {
+  appointment: "1991-01-12",
+  changed: false,
+  draft: "",
+  loading: false,
+};
 
 export const appointmentSlice = createSlice({
   name: "appointment",
@@ -17,9 +22,9 @@ export const appointmentSlice = createSlice({
       state.draft = action.payload;
       state.changed = true;
     },
-    changeLoading(state){
+    changeLoading(state) {
       state.loading = !state.loading;
-    }
+    },
   },
 });
 

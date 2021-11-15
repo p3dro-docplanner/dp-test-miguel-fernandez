@@ -7,8 +7,8 @@ import { CurrentAppointment } from "../../components/CurrentAppointment";
 import moment from "moment";
 
 export const Appointment = () => {
-
-  const formatDateAppointment = (date) => moment(date).format("dddd, DD MMM YYYY [at] HH:mm");
+  const formatDateAppointment = (date) =>
+    moment(date).format("dddd, DD MMM YYYY [at] HH:mm");
 
   return (
     <div>
