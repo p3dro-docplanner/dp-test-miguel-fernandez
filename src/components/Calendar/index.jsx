@@ -42,7 +42,7 @@ export const Calendar = () => {
 
   const findDay = (date) => {
     const week = enumerateDaysBetweenDates(moment(monday), iterator);
-    const filtered = week.filter(day => day.number === date)
+    const filtered = week.filter(weekDay => weekDay.day === date)
     return filtered && filtered[0];
   };
 

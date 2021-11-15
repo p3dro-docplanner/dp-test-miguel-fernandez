@@ -4,11 +4,12 @@ export const groupsByDay = (appointments) => {
   if(appointments.length > 0) {
     let week = [];
     for( let i = 0 ; i < 7; i++ ){
-      week.push(moment(appointments[0].Start).add(i, 'days').format('DD'));
+      week.push(moment(appointments[0].Start).add(i, 'days').format('ddd'));
     }
+    
     return (
       appointments.reduce((acc, date) => {
-        const weekDay = `${moment(date.Start).format('DD')}`;
+        const weekDay = `${moment(date.Start).format('ddd')}`;
         if (!acc[weekDay]) {
           acc[weekDay] = [];
         }
@@ -28,7 +29,7 @@ export const groupsByDay = (appointments) => {
 
 export const enumerateDaysBetweenDates = (date, iterator) => {
   const fromDate = moment(date).add(7 * iterator, 'days');
-  const toDate = moment().add(7 + (7 * iterator), "days");
+  const toDate = moment(fromDate).add(6, "days");
   const now = fromDate,
     dates = [];
 
