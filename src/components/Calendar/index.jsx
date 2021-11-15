@@ -46,7 +46,7 @@ export const Calendar = () => {
 
   const findDay = (date) => {
     const week = enumerateDaysBetweenDates(moment(), iterator);
-    const filtered = week.filter(day => day.i == date || day.i == 7);
+    const filtered = week.filter(day => day.i.toString() === date || day.i.toString() === 7);
     return filtered[0];
   };
 
