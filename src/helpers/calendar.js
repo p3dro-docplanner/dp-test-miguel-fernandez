@@ -45,7 +45,3 @@ export const enumerateDaysBetweenDates = (date, iterator) => {
   }
   return dates;
 };
-
-export const isWeekRange = (day) => {
-  return moment(day.Start).isSameOrBefore(moment().add(6, "days"), "year")
-};
