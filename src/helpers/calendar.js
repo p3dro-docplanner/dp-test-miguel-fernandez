@@ -1,7 +1,6 @@
 import moment from "moment";
 
 export const groupsByDay = (appointments) => {
-  
   if(appointments.length > 0) {
     let week = [];
     for( let i = 0 ; i < 7; i++ ){
@@ -16,9 +15,9 @@ export const groupsByDay = (appointments) => {
         }
 
         acc[weekDay].push(date);
-        for (let i in week) {
-          if (!acc.hasOwnProperty(week[i])) {
-            acc[week[i]] = [];
+        for (let day of week) {
+          if (!acc.hasOwnProperty(day)) {
+            acc[day] = [];
           }
         }
 
