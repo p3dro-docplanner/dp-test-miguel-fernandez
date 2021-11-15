@@ -7,7 +7,6 @@ export const groupsByDay = (appointments) => {
       week.push(moment(appointments[0].Start).add(i, 'days').format('DD'));
     }
     return (
-      appointments &&
       appointments.reduce((acc, date) => {
         const weekDay = `${moment(date.Start).format('DD')}`;
         if (!acc[weekDay]) {
