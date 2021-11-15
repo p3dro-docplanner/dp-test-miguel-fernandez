@@ -7,7 +7,6 @@ import appointmentService from "../../services/appointmentService";
 import { appointmentActions } from "../../store/slices/appointmentSlice";
 import {
   groupsByDay,
-  parseDate,
   enumerateDaysBetweenDates,
   isWeekRange,
 } from "../../helpers/calendar";
@@ -46,12 +45,12 @@ export const Calendar = () => {
   const filteredAppointments = (data) => data.filter((day) => isWeekRange(day));
 
   const findDay = (date) => {
-    const week = enumerateDaysBetweenDates(parseDate(moment()), iterator);
+    const week = enumerateDaysBetweenDates(moment(), iterator);
     const filtered = week.filter(day => day.number === date)
     return filtered && filtered[0];
   };
 
-  const parseDateButton = (date) => parseDate(date.Start).format("HH:mm");
+  const parseDateButton = (date) => moment(date.Start).format("HH:mm");
 
   const renderItems = (group) =>
     groupByDay[group].map((date, index) => {
@@ -59,8 +58,8 @@ export const Calendar = () => {
         <Button
           type="primary"
           key={`${group} ${index}`}
-          onClick={() => handleOnClick(parseDate(date.Start).format("YYYY-MM-DD HH:mm:ss"))}
-          disabled={date.Taken || parseDate(date.Start).format("YYYY-MM-DD HH:mm:ss") === appointment }
+          onClick={() => handleOnClick(moment(date.Start).format("YYYY-MM-DD HH:mm:ss"))}
+          disabled={date.Taken || moment(date.Start).format("YYYY-MM-DD HH:mm:ss") === appointment }
           className="button-calendar"
         >
           {parseDateButton(date)}

@@ -7,29 +7,24 @@ export const groupsByDay = (appointments) => {
     for( let i = 0 ; i < 7; i++ ){
       week.push(moment(appointments[0].Start).add(i, 'days').format('DD'));
     }
-    return (
-      appointments &&
-      appointments.reduce((acc, date) => {
+    return (appointments.reduce((acc, date) => {
         const weekDay = `${moment(date.Start).format('DD')}`;
+
         if (!acc[weekDay]) {
           acc[weekDay] = [];
         }
 
         acc[weekDay].push(date);
-        for (let i in week) {
-          if (!acc.hasOwnProperty(week[i])) {
-            acc[week[i]] = [];
+        for (let day of week) {
+          if (!acc.hasOwnProperty(day)) {
+            acc[day] = [];
           }
         }
-
+        
         return acc;
       }, {})
     );
   }
-};
-
-export const parseDate = (date) => {
-  return moment(date);
 };
 
 export const enumerateDaysBetweenDates = (date, iterator) => {
@@ -52,5 +47,5 @@ export const enumerateDaysBetweenDates = (date, iterator) => {
 };
 
 export const isWeekRange = (day) => {
-  return parseDate(day.Start).isSameOrBefore(moment().add(6, "days"), "year");
+  return moment(day.Start).isSameOrBefore(moment().add(6, "days"), "year");
 };
