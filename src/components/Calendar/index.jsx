@@ -40,14 +40,14 @@ export const Calendar = () => {
 
   const handleShowMore = () => setShowMore(!showMore);
 
-  const handleOnClick = (date) => modifyHandler(date)
+  const handleOnClick = (date) => modifyHandler(date);
 
   const filteredAppointments = (data) => data.filter((day) => isWeekRange(day));
 
   const findDay = (date) => {
     const week = enumerateDaysBetweenDates(moment(), iterator);
-    const filtered = week.filter(day => day.number === date)
-    return filtered && filtered[0];
+    const filtered = week.filter(day => day.number === date)[0];
+    return filtered && filtered;
   };
 
   const parseDateButton = (date) => moment(date.Start).format("HH:mm");
