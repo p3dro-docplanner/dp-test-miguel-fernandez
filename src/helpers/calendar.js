@@ -1,34 +1,29 @@
 import moment from "moment";
 
+const week = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 export const groupsByDay = (appointments) => {
-  if(appointments.length > 0) {
-    let week = [];
-    for( let i = 0 ; i < 7; i++ ){
-      week.push(moment(appointments[0].Start).add(i, 'days').format('ddd'));
-    }
-    
-    return (
-      appointments.reduce((acc, date) => {
-        const weekDay = `${moment(date.Start).format('ddd')}`;
-        if (!acc[weekDay]) {
-          acc[weekDay] = [];
-        }
+  if (appointments.length > 0) {
+    return appointments.reduce((acc, date) => {
+      const weekDay = `${moment(date.Start).format("ddd")}`;
+      if (!acc[weekDay]) {
+        acc[weekDay] = [];
+      }
 
-        acc[weekDay].push(date);
-        for (let day of week) {
-          if (!acc.hasOwnProperty(day)) {
-            acc[day] = [];
-          }
+      acc[weekDay].push(date);
+      for (let day of week) {
+        if (!acc.hasOwnProperty(day)) {
+          acc[day] = [];
         }
+      }
 
-        return acc;
-      }, {})
-    );
+      return acc;
+    }, {});
   }
 };
 
 export const enumerateDaysBetweenDates = (date, iterator) => {
-  const fromDate = moment(date).add(7 * iterator, 'days');
+  const fromDate = moment(date).add(7 * iterator, "days");
   const toDate = moment(fromDate).add(6, "days");
   const now = fromDate,
     dates = [];
