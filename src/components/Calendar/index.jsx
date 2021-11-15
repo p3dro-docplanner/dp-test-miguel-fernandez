@@ -8,7 +8,6 @@ import { appointmentActions } from "../../store/slices/appointmentSlice";
 import {
   groupsByDay,
   enumerateDaysBetweenDates,
-  isWeekRange,
 } from "../../helpers/calendar";
 
 export const Calendar = () => {
@@ -32,8 +31,7 @@ export const Calendar = () => {
 
   useEffect(() => {
     appointmentService.getAppointments(dateFetch).then((response) => {
-      const filteredWeek = filteredAppointments(response.data);
-      setAppointments(filteredWeek);
+      setAppointments(response.data);
       setLoadingCalendar(false);
     });
   }, [dateFetch]);
@@ -42,7 +40,6 @@ export const Calendar = () => {
 
   const handleOnClick = (date) => modifyHandler(date);
 
-  const filteredAppointments = (data) => data.filter((day) => isWeekRange(day));
 
   const findDay = (date) => {
     const week = enumerateDaysBetweenDates(moment(), iterator);
@@ -69,8 +66,6 @@ export const Calendar = () => {
 
     const handlerDates = (date, next = false) => {
       appointmentService.getAppointments(date).then((response) => {
-       const filteredWeek = filteredAppointments(response.data);
-       setAppointments(filteredWeek);
        if(next){
         setIterator(iterator + 1);
        } else {
