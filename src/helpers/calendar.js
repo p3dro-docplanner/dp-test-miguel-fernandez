@@ -27,10 +27,6 @@ export const groupsByDay = (appointments) => {
   }
 };
 
-export const parseDate = (date) => {
-  return moment(date);
-};
-
 export const enumerateDaysBetweenDates = (date, iterator) => {
   const fromDate = moment(date).add(7 * iterator, 'days');
   const toDate = moment().add(6 + (7 * iterator), "days");
@@ -51,5 +47,5 @@ export const enumerateDaysBetweenDates = (date, iterator) => {
 };
 
 export const isWeekRange = (day) => {
-  return parseDate(day.Start).isSameOrBefore(moment().add(6, "days"), "year");
+  return moment(day.Start).isSameOrBefore(moment().add(6, "days"), "year")
 };
