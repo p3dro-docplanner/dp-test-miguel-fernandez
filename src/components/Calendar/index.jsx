@@ -28,10 +28,15 @@ export const Calendar = () => {
   const groupByDay = groupsByDay(appointments);
 
   useEffect(() => {
-    appointmentService.getAppointments(dateFetch).then((response) => {
-      setAppointments(response.data);
-      setLoadingCalendar(false);
-    });
+    appointmentService
+      .getAppointments(dateFetch)
+      .then((response) => {
+        setAppointments(response.data);
+        setLoadingCalendar(false);
+      })
+      .catch((e) => {
+        setLoadingCalendar(false);
+      });
   }, [dateFetch]);
 
   const handleShowMore = () => setShowMore(!showMore);
