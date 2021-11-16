@@ -59,7 +59,7 @@ export const Calendar = () => {
           type="primary"
           key={`${group} ${index}`}
           onClick={() => handleOnClick(moment(date.Start).format("YYYY-MM-DD HH:mm:ss"))}
-          disabled={date.Taken || moment(date.Start).format("YYYY-MM-DD HH:mm:ss") === appointment }
+          disabled={date.Taken || moment(date.Start).format("YYYY-MM-DD HH:mm:ss") === appointment || moment().isAfter(moment(date.Start))}
           className="button-calendar"
         >
           {parseDateButton(date)}
