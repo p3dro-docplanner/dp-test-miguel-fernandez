@@ -73,15 +73,12 @@ export const Calendar = () => {
     });
 
   const handlerDates = (date, next = false) => {
-    appointmentService.getAppointments(date).then((response) => {
-      setAppointments(response.data);
       if (next) {
         setIterator(iterator + 1);
       } else {
         setIterator(iterator - 1);
       }
       setDateFetch(moment(date).format("YYYYMMDD"));
-    });
   };
 
   const handleNext = (date, next) => {
