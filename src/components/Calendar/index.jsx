@@ -46,7 +46,7 @@ export const Calendar = () => {
   const filteredAppointments = (data) => data.filter((day) => isWeekRange(day));
 
   const findDay = (date) => {
-    const week = enumerateDaysBetweenDates(parseDate(moment()), iterator);
+    const week = enumerateDaysBetweenDates(moment(monday), iterator);
     const filtered = week.filter(day => day.number === date)
     return filtered && filtered[0];
   };

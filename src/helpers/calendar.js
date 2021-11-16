@@ -32,7 +32,7 @@ export const parseDate = (date) => {
 };
 
 export const enumerateDaysBetweenDates = (date, iterator) => {
-  const fromDate = moment(date.Start).add(7 * iterator, 'days');
+  const fromDate = moment(date).add(7 * iterator, 'days');
   const toDate = moment().add(6 + (7 * iterator), "days");
   const now = fromDate,
     dates = [];
@@ -47,6 +47,7 @@ export const enumerateDaysBetweenDates = (date, iterator) => {
     dates.push(obj);
     now.add(1, "days");
   }
+  console.log(dates);
   return dates;
 };
 
