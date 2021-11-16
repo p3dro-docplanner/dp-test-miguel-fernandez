@@ -47,7 +47,6 @@ export const enumerateDaysBetweenDates = (date, iterator) => {
     dates.push(obj);
     now.add(1, "days");
   }
-  console.log(dates);
   return dates;
 };
 
