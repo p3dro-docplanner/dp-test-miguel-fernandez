@@ -23,7 +23,7 @@ export const Calendar = () => {
   const previousWeek = moment(dateFetch).subtract(7, "days").format("YYYYMMDD");
 
   const modifyHandler = (data) =>
-    dispatch(appointmentActions.updateDraft(data));
+    dispatch(appointmentActions.updateDraft({start: data, end: moment(data).add(10,'minutes').format('YYYY-MM-DD HH:mm:ss')}));
 
   const groupByDay = groupsByDay(appointments);
 

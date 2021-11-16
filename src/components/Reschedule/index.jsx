@@ -9,8 +9,8 @@ import moment from "moment";
 export const Reschedule = ({ formatDateAppointment }) => {
   const dispatch = useDispatch();
   const appointment = useSelector((state) => state.appointment);
-  const newAppointment = formatDateAppointment(appointment.draft);
-  const formatted = moment(appointment.draft);
+  const newAppointment = formatDateAppointment(appointment.draft.start);
+  const formatted = moment(appointment.draft.start);
 
   const modifyHandler = (data) => {
     dispatch(appointmentActions.changeLoading());

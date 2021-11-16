@@ -4,7 +4,7 @@ import appointmentService from "../../services/appointmentService";
 const initialState = {
   appointment: "1991-01-12",
   changed: false,
-  draft: "",
+  draft: {start: '', end: ''},
   loading: false,
 };
 
@@ -16,7 +16,7 @@ export const appointmentSlice = createSlice({
       appointmentService.addAppointment(state.draft);
       state.appointment = action.payload;
       state.changed = false;
-      state.draft = "";
+      state.draft = initialState.draft;
     },
     updateDraft(state, action) {
       state.draft = action.payload;

@@ -8,11 +8,11 @@ class AppointmentService {
         if (response) return response;
       });
   }
-  addAppointment(dateStart) {
+  addAppointment(date) {
     return axios
       .post(`${process.env.REACT_APP_API}/BookSlot`, {
-        Start: dateStart,
-        End: "2022-05-12 09:50:00",
+        Start: date.start,
+        End: date.end,
         Comments: "",
         Patient: {
           Name: "Miguel",
