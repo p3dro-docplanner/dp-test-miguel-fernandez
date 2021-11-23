@@ -23,7 +23,9 @@ export const Calendar = () => {
   const previousWeek = moment(dateFetch).subtract(7, "days").format("YYYYMMDD");
 
   const modifyHandler = (data) =>
-    dispatch(appointmentActions.updateDraft({start: data, end: moment(data).add(10,'minutes').format('YYYY-MM-DD HH:mm:ss')}));
+    dispatch(
+      appointmentActions.updateDraft(data)
+    );
 
   const groupByDay = groupsByDay(appointments);
 
@@ -41,7 +43,7 @@ export const Calendar = () => {
 
   const handleShowMore = () => setShowMore(!showMore);
 
-  const handleOnClick = (date) => modifyHandler(date);
+  const handleOnClick = (dates) => modifyHandler(dates);
 
   const findDay = (date) => {
     const week = enumerateDaysBetweenDates(moment(monday), iterator);
@@ -58,7 +60,10 @@ export const Calendar = () => {
           type="primary"
           key={`${group} ${index}`}
           onClick={() =>
-            handleOnClick(moment(date.Start).format("YYYY-MM-DD HH:mm:ss"))
+            handleOnClick({
+              start: moment(date.Start).format("YYYY-MM-DD HH:mm:ss"),
+              end: moment(date.End).format("YYYY-MM-DD HH:mm:ss"),
+            })
           }
           disabled={
             date.Taken ||
@@ -73,12 +78,12 @@ export const Calendar = () => {
     });
 
   const handlerDates = (date, next = false) => {
-      if (next) {
-        setIterator(iterator + 1);
-      } else {
-        setIterator(iterator - 1);
-      }
-      setDateFetch(moment(date).format("YYYYMMDD"));
+    if (next) {
+      setIterator(iterator + 1);
+    } else {
+      setIterator(iterator - 1);
+    }
+    setDateFetch(moment(date).format("YYYYMMDD"));
   };
 
   const handleNext = (date, next) => {
